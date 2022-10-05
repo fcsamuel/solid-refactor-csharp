@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Alura.LeilaoOnline.WebApp.Models;
-using Alura.LeilaoOnline.WebApp.Dados;
+using Alura.LeilaoOnline.WebApp.Dados.EFCore;
 
 namespace Alura.LeilaoOnline.WebApp.Seeding
 {
@@ -9,19 +9,17 @@ namespace Alura.LeilaoOnline.WebApp.Seeding
     {
         public static void Seed()
         {
-            using (var ctx = new AppDbContext())
+            using var ctx = new AppDbContext();
+            if (ctx.Database.EnsureCreated())
             {
-                if (ctx.Database.EnsureCreated())
+                var generator = new LeilaoRandomGenerator(new Random());
+                var leiloes = new List<Leilao>();
+                for (var i = 1; i <= 200; i++)
                 {
-                    var generator = new LeilaoRandomGenerator(new Random());
-                    var leiloes = new List<Leilao>();
-                    for (var i = 1; i <= 200; i++)
-                    {
-                        leiloes.Add(generator.NovoLeilao);
-                    }
-                    ctx.Leiloes.AddRange(leiloes);
-                    ctx.SaveChanges();
+                    leiloes.Add(generator.NovoLeilao);
                 }
+                ctx.Leiloes.AddRange(leiloes);
+                ctx.SaveChanges();
             }
         }
     }
