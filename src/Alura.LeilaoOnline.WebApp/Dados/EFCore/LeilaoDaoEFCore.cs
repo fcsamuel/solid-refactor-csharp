@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Alura.LeilaoOnline.WebApp.Dados
+namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
 {
-    public class LeilaoDao
+    public class LeilaoDaoEFCore : ILeilaoDao
     {
         private readonly AppDbContext context;
 
-        public LeilaoDao(AppDbContext context)
+        public LeilaoDaoEFCore()
         {
-            this.context = context;
+            context = new AppDbContext();
         }
         public IEnumerable<Leilao> GetLeiloes()
         {
@@ -36,10 +36,6 @@ namespace Alura.LeilaoOnline.WebApp.Dados
         {
             context.Leiloes.Remove(leilao);
             context.SaveChanges();
-        }
-        public IEnumerable<Categoria> GetCategorias()
-        {
-            return context.Categorias.ToList();
         }
     }
 }

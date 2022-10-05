@@ -1,19 +1,20 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Alura.LeilaoOnline.WebApp.Dados;
 using Alura.LeilaoOnline.WebApp.Models;
 using System;
+using Alura.LeilaoOnline.WebApp.Dados;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
     public class LeilaoController : Controller
     {
-        private readonly LeilaoDao leilaoDao;
+        private readonly ILeilaoDao leilaoDao;
+        private readonly ICategoriaDao categoriaDao;
 
-        public LeilaoController(LeilaoDao leilaoDao)
+        public LeilaoController(ILeilaoDao leilaoDao, ICategoriaDao categoriaDao)
         {
             this.leilaoDao = leilaoDao;
+            this.categoriaDao = categoriaDao;
         }
 
         public IActionResult Index()
@@ -25,7 +26,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpGet]
         public IActionResult Insert()
         {
-            ViewData["Categorias"] = leilaoDao.GetCategorias();
+            ViewData["Categorias"] = categoriaDao.GetCategorias();
             ViewData["Operacao"] = "Inclusão";
             return View("Form");
         }
@@ -38,7 +39,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
                 leilaoDao.PostLeilao(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = leilaoDao.GetCategorias();
+            ViewData["Categorias"] = categoriaDao.GetCategorias();
             ViewData["Operacao"] = "Inclusão";
             return View("Form", model);
         }
@@ -46,7 +47,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewData["Categorias"] = leilaoDao.GetCategorias();
+            ViewData["Categorias"] = categoriaDao.GetCategorias();
             ViewData["Operacao"] = "Edição";
             var leilao = leilaoDao.GetLeilaoById(id);
             if (leilao == null) return NotFound();
@@ -61,7 +62,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
                 leilaoDao.PutLeilao(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = leilaoDao.GetCategorias();
+            ViewData["Categorias"] = categoriaDao.GetCategorias();
             ViewData["Operacao"] = "Edição";
             return View("Form", model);
         }
