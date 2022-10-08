@@ -11,10 +11,11 @@ namespace Alura.LeilaoOnline.WebApp
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IProdutoService, DefaultProdutoService>();
+            services.AddTransient<IProdutoService, CategoriasComLeiloesProdutoService>();
             services.AddTransient<IAdminService, ArquivamentoAdminService>();
             services.AddTransient<ILeilaoDao, LeilaoDaoEFCore>();
-            services.AddTransient<ICategoriaDao, CategoriaDaoEFCore>();
+            services.AddTransient<ICategoriaDao, CategoriaBuscaComLeilaoDao>();
+            services.AddTransient<ICategoriaBuscaComLeilaoDao, CategoriaBuscaComLeilaoDao>();
             services
                 .AddControllersWithViews()
                 .AddNewtonsoftJson(options => 
