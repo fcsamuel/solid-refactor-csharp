@@ -1,26 +1,19 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Alura.LeilaoOnline.WebApp.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Alura.LeilaoOnline.WebApp.Dados.EFCore;
-using Alura.LeilaoOnline.WebApp.Dados;
+using Alura.LeilaoOnline.WebApp.Services;
 
 namespace Alura.LeilaoOnline.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILeilaoDao leilaoDao;
-        private readonly ICategoriaDao categoriaDao;
-
-        public HomeController(ILeilaoDao leilaoDao, ICategoriaDao categoriaDao)
+        private readonly IProdutoService produtoService;
+        public HomeController(IProdutoService produtoService)
         {
-            this.leilaoDao = leilaoDao;
-            this.categoriaDao = categoriaDao;
+            this.produtoService = produtoService;
         }
         public IActionResult Index()
         {
-            var categorias = categoriaDao.GetCategoriasComInfoLeilao();
+            var categorias = produtoService.ConsultaCategoriasComTotalDeLeiloesEmPregao();
             return View(categorias);
         }
 
@@ -34,7 +27,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         [Route("[controller]/Categoria/{categoria}")]
         public IActionResult Categoria(int categoria)
         {
-            var categ = categoriaDao.GetCategoria(categoria);
+            var categ = produtoService.ConsultaCategoriaPorIdComLeiloesEmPregao(categoria);
             return View(categ);
         }
 
@@ -44,12 +37,7 @@ namespace Alura.LeilaoOnline.WebApp.Controllers
         {
             ViewData["termo"] = termo;
             var termoNormalized = termo.ToUpper();
-            var leiloes = leilaoDao
-                .GetLeiloes()
-                .Where(c =>
-                    c.Titulo.ToUpper().Contains(termoNormalized) ||
-                    c.Descricao.ToUpper().Contains(termoNormalized) ||
-                    c.Categoria.Descricao.ToUpper().Contains(termoNormalized));
+            var leiloes = produtoService.PesquisaLeiloesEmPregaoPorTermo(termoNormalized);
             return View(leiloes);
         }
     }
