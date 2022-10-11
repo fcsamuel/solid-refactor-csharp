@@ -38,7 +38,7 @@ namespace Alura.LeilaoOnline.WebApp.Services.Handlers
 
         public IEnumerable<Leilao> PesquisaLeiloesEmPregaoPorTermo(string termo)
         {
-            throw new System.NotImplementedException();
+            return defaultProdutoService.PesquisaLeiloesEmPregaoPorTermo(termo);
         }
     }
 }
