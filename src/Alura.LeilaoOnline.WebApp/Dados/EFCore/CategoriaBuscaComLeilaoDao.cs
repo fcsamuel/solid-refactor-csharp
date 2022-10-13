@@ -14,14 +14,14 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
             categoriaDao = new CategoriaDaoEFCore();
             context = new AppDbContext();
         }
-        public Categoria GetCategoria(int id)
+        public Categoria GetById(int id)
         {
-            return categoriaDao.GetCategoria(id);
+            return categoriaDao.GetById(id);
         }
 
-        public IEnumerable<Categoria> GetCategorias()
+        public IEnumerable<Categoria> GetAll()
         {
-            return categoriaDao.GetCategorias();
+            return categoriaDao.GetAll();
         }
 
         public IEnumerable<Categoria> GetCategoriasComInfoLeilao()

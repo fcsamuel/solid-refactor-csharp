@@ -12,7 +12,7 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
         {
             context = new AppDbContext();
         }
-        public IEnumerable<Categoria> GetCategorias()
+        public IEnumerable<Categoria> GetAll()
         {
             return context.Categorias.ToList();
         }
@@ -31,7 +31,7 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EFCore
                     Finalizados = c.Leiloes.Where(l => l.Situacao == SituacaoLeilao.Finalizado).Count(),
                 });
         }
-        public Categoria GetCategoria(int id)
+        public Categoria GetById(int id)
         {
             return context.Categorias
                 .Include(c => c.Leiloes)

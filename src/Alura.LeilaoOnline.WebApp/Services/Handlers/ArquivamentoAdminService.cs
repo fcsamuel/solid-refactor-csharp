@@ -55,7 +55,7 @@ namespace Alura.LeilaoOnline.WebApp.Services.Handlers
             if (leilao != null && leilao.Situacao != SituacaoLeilao.Pregao)
             {
                 leilao.Situacao = SituacaoLeilao.Arquivado;
-                leilaoDao.PutLeilao(leilao);
+                leilaoDao.Update(leilao);
             }
         }
     }

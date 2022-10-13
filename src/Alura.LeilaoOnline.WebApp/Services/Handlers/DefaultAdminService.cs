@@ -18,56 +18,56 @@ namespace Alura.LeilaoOnline.WebApp.Services.Handlers
 
         public IEnumerable<Categoria> ConsultaCategorias()
         {
-            return categoriaDao.GetCategorias();
+            return categoriaDao.GetAll();
         }
 
         public IEnumerable<Leilao> ConsultaLeiloes()
         {
-            return leilaoDao.GetLeiloes();
+            return leilaoDao.GetAll();
         }
 
         public Leilao ConsultaLeilaoPorId(int id)
         {
-            return leilaoDao.GetLeilaoById(id);
+            return leilaoDao.GetById(id);
         }
 
         public void CadastraLeilao(Leilao leilao)
         {
-            leilaoDao.PostLeilao(leilao);
+            leilaoDao.Insert(leilao);
         }
 
         public void ModificaLeilao(Leilao leilao)
         {
-            leilaoDao.PutLeilao(leilao);
+            leilaoDao.Update(leilao);
         }
 
         public void RemoveLeilao(Leilao leilao)
         {
             if (leilao != null && leilao.Situacao != SituacaoLeilao.Pregao)
             {
-                leilaoDao.RemoveLeilao(leilao);
+                leilaoDao.Delete(leilao);
             }
         }
 
         public void FinalizaPregaoDoLeilaoComId(int id)
         {
-            var leilao = leilaoDao.GetLeilaoById(id);
+            var leilao = leilaoDao.GetById(id);
             if (leilao != null && leilao.Situacao == SituacaoLeilao.Pregao)
             {
                 leilao.Situacao = SituacaoLeilao.Finalizado;
                 leilao.Termino = DateTime.Now;
-                leilaoDao.PutLeilao(leilao);
+                leilaoDao.Update(leilao);
             }
         }
 
         public void IniciaPregaoDoLeilaoComId(int id)
         {
-            var leilao = leilaoDao.GetLeilaoById(id);
+            var leilao = leilaoDao.GetById(id);
             if (leilao != null && leilao.Situacao == SituacaoLeilao.Rascunho)
             {
                 leilao.Situacao = SituacaoLeilao.Pregao;
                 leilao.Inicio = DateTime.Now;
-                leilaoDao.PutLeilao(leilao);
+                leilaoDao.Update(leilao);
             }
         }
     }
