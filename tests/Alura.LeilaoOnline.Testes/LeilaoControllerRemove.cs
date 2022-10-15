@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Alura.LeilaoOnline.WebApp.Controllers;
 using Alura.LeilaoOnline.WebApp.Dados.EFCore;
 using Alura.LeilaoOnline.WebApp.Services.Handlers;
+using Moq;
+using Alura.LeilaoOnline.WebApp.Dados;
 
 namespace Alura.LeilaoOnline.Testes
 {
@@ -14,9 +16,12 @@ namespace Alura.LeilaoOnline.Testes
             // arrange
             var idLeilaoInexistente = 11232; // preciso entrar no banco para saber qual é inexistente!! teste deixa de ser automático...
             var actionResultEsperado = typeof(NotFoundResult);
+            var mockLeilao = new Mock<ILeilaoDao>();
+            var mockCategoria = new Mock<ICategoriaDao>();
+
             var service = new ArquivamentoAdminService(
-                new LeilaoDaoEFCore(),
-                new CategoriaBuscaComLeilaoDao());
+                mockLeilao.Object,
+                mockCategoria.Object); ;
             var controller = new LeilaoController(service);
 
             // act
@@ -32,9 +37,12 @@ namespace Alura.LeilaoOnline.Testes
             // arrange
             var idLeilaoEmPregao = 11232; // qual leilao está em pregão???!! 
             var actionResultEsperado = typeof(StatusCodeResult);
+            var mockLeilao = new Mock<ILeilaoDao>();
+            var mockCategoria = new Mock<ICategoriaDao>();
+
             var service = new ArquivamentoAdminService(
-                new LeilaoDaoEFCore(),
-                new CategoriaBuscaComLeilaoDao());
+                mockLeilao.Object,
+                mockCategoria.Object);
             var controller = new LeilaoController(service);
 
             // act
@@ -50,9 +58,12 @@ namespace Alura.LeilaoOnline.Testes
             // arrange
             var idLeilaoEmRascunho = 11232; // qual leilao está em rascunho???!!
             var actionResultEsperado = typeof(NoContentResult);
+            var mockLeilao = new Mock<ILeilaoDao>();
+            var mockCategoria = new Mock<ICategoriaDao>();
+
             var service = new ArquivamentoAdminService(
-                new LeilaoDaoEFCore(),
-                new CategoriaBuscaComLeilaoDao());
+                mockLeilao.Object,
+                mockCategoria.Object);
             var controller = new LeilaoController(service);
 
             // act
